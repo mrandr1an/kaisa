@@ -1,0 +1,8 @@
+parameter =  {id ~ ":" ~ id}
+
+let_function = { "fn" ~ id ~ parameter*  ~ "=" ~ operation}
+let_variable = { "val" ~ id ~ "=" ~ operation}
+let_type= { "type" ~ id ~ id* ~ "=" ~ operation}
+
+assignment = { "let" ~ (let_function | let_variable | let_type) ~ ("in" ~  (operation | assignment))*  }
+
