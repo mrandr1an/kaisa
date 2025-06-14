@@ -1,8 +1,0 @@
-[package]
-name = "kaisa"
-version = "0.1.0"
-edition = "2024"
-
-[dependencies]
-pest = { version = "2.6"}
-pest_derive = { version = "2.6"}
