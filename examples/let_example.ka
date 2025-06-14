@@ -1,0 +1,61 @@
+;;(1)
+;;Function that takes 2 (primitive) Int args and returns Int
+let fn add x: Int y: Int -> Int =
+    x + y
+end
+
+;;(2)
+;;Function that takes 2 types as args and returns a Tuple of them 
+;;The Type type includes all primitive types and user defined types
+;;that are included in the program
+let fn pair x: Type y: Type -> (Type,Type) =
+    (x,y)
+end
+
+;;(3)
+;;Function that takes 2 primitive types as args
+;; and returns a Tuple of them 
+let fn pair x: Primitive y: Primitive -> (Type,Type) =
+    (x,y)
+end
+
+;;(4)
+;;Function that prints all types available in current program.
+;;Unit is the empty type.
+let fn types_available Unit -> Unit
+    ;;debug is a "print" function provided by the compiler
+    debug(Type::collect())
+end
+
+;;(5)
+;;User defined type without args
+let type Age = Int end
+let type Name = String end
+let type Programmer = Unit end
+let type Artist = Unit end
+let type Teacher = Unit end
+
+;;(6)
+;; User defined type that aggregates 2 user defined types.
+let type Dog = Age*Name end
+let type Human = Age*Name*Job end
+
+;;(7)
+;; User defined type that sums 3 user defined types.
+let type Job = Programmer + Artist + Teacher end
+
+;;(8)
+;; More complex composite type
+;; Either an aggregate Age*Name or an aggregate Age*Name*Job
+let type Creature = Age*Name + Age*Name*Job end
+
+;;(9)
+;; User defined type with two generic parameters
+;; The generic parameters must live below Type
+let type Either<L: Type,R: Type> =
+   L + R 
+end
+
+;;(10)
+;; User defined value created by Type Constructor
+let val chris: Human = Human(Age(22)*Name("Chris")*Job(Programmer)) end
