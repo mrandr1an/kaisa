@@ -1,4 +1,5 @@
 (executable
  (public_name kaisa)
  (name main)
- (libraries kaisa))
+ (libraries kaisa)
+)

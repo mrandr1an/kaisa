@@ -1,2 +1,13 @@
 (library
- (name kaisa))
+ (name kaisa)
+ (libraries menhirLib)
+ (preprocess (pps ppx_deriving.show ppx_deriving.ord))
+ (modules ast lexer parser)
+)
+
+(menhir
+ (modules parser)
+)
+
+(ocamllex
+ (modules lexer))
