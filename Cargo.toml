@@ -4,5 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-pest = { version = "2.6"}
-pest_derive = { version = "2.6"}
+lalrpop-util = "0.22.2"
+
+[build-dependencies]
+lalrpop = "0.22.2"
