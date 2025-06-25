@@ -6,9 +6,8 @@ fn main()
 {
     let manifest_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
     let grammar_files = [
-	"src/frontend/grammars/value.lalrpop",
-	"src/frontend/grammars/expr.lalrpop",
-	"src/frontend/grammars/let.lalrpop",
+	"src/frontend/grammars/value.grammar",
+	"src/frontend/grammars/expr.grammar",
     ];
 
     let mut kaisa_grammar = String::new();
@@ -26,4 +25,6 @@ fn main()
 
     let out_path = Path::new(&manifest_dir).join("src/kaisa.lalrpop");
     write(out_path,&kaisa_grammar).unwrap_or_else(|e| panic!("Failed to write kaisa grammar: {}",e));
+
+    lalrpop::process_root().unwrap();
 }

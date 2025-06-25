@@ -1,0 +1,4 @@
+pub Expr: Box<Expr<'input>> =
+{
+  <val: Value> => Box::new(Expr::Val(val)),
+};

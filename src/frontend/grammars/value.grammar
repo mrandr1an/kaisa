@@ -1,0 +1,41 @@
+use std::str::FromStr;
+use crate::frontend::ast::{Value,Expr,Node};
+
+grammar;
+
+pub Value: Value<'input> =
+{
+  <start: @L> <num:r"[0-9]+"> <end: @R>  =>
+  	  Value::Number(Node::new(start..end,num)),
+  <start: @L> <t: Tuple> <end: @R> =>
+  	  Value::Tuple(Node::new(start..end,t)),
+  <start: @L> "'" <c: r"[a-zA-Z]"> "'" <end: @R> =>
+  	  Value::Character(Node::new(start..end,c)),
+  <start: @L> <l: List> <end: @R> =>
+  	  Value::List(Node::new(start..end,l)),
+  
+};
+
+Tuple: Box<[Box<Expr<'input>>]> = 
+{
+  "(" <i: Comma<Expr>> ")" => i,
+};
+
+List: Box<[Box<Expr<'input>>]> = 
+{
+  "[" <i: Comma<Expr>> "]" => i,
+};
+
+Comma<T>: Box<[T]> =
+{
+ <mut items:(<T> ",")*> <e:T?> => {
+      match e
+      {
+        None => items.into_boxed_slice(),
+	Some(e) => {
+	  items.push(e);
+	  items.into_boxed_slice()
+	},
+      }
+ }
+};
