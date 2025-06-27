@@ -5,6 +5,7 @@ edition = "2024"
 
 [dependencies]
 lalrpop-util = { version = "0.22", features = ["lexer"] }
+logos = "0.15.0"
 
 [build-dependencies]
 lalrpop = "0.22.2"
