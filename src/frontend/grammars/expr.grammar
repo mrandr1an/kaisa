@@ -1,6 +1,0 @@
-pub Expr: Box<Expr<'input>> =
-{
-  <val: Value> => Box::new(Expr::Val(val)),
-  <start: @L> <id: "identifier"> <end: @R> =>
-  	  Box::new(Expr::Id(Node::new(start..end,id))),
-};
