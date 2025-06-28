@@ -1,12 +1,11 @@
-use logos::{Logos, SpannedIter};
+use std::ops::Range;
+
+use logos::{Lexer, Logos, SpannedIter};
 
 #[derive(Default,Debug,Clone,PartialEq)]
-pub struct LexerError
-{
-  
-}
+pub struct LexerError;
 
-#[derive(Logos, Debug, PartialEq)]
+#[derive(Logos,Clone, Debug, PartialEq)]
 #[logos(error = LexerError)]
 #[logos(skip r"[ \t\n\f]+")] // Ignore this regex pattern between tokens
 pub enum Token<'input> {
@@ -14,41 +13,65 @@ pub enum Token<'input> {
     DefaultNumber(&'input str),
     #[regex(r#""([^"\\]|\\.)*""#)]
     StringLiteral(&'input str),
+    #[regex(r"'([^'\\]|\\.)'")]
+    CharacterLiteral(&'input str),
+    #[token("let")]
+    Let,
+    #[token("type")]
+    Type,
+    #[token("fn")]
+    Fn,
+    #[token("val")]
+    Val,
+    #[token("(")]
+    LPAREN,
+    #[token(")")]
+    RPAREN,
+    #[token("'")]
+    SQUOTE,
+    #[token("[")]
+    LBRACK,
+    #[token("]")]
+    RBRACK,
+    #[token(",")]
+    COMMA, 
+    #[regex(r"[a-zA-Z_][a-zA-Z0-9_]*")]
+    Identifier(&'input str),
 }
 
 pub struct KaisaLexer<'input>
 {
-  inner: SpannedIter<'input,Token<'input>>,
-  errors: Vec<LexerError>
+ stream: SpannedIter<'input,Token<'input>>,
 }
 
 impl<'input> KaisaLexer<'input>
 {
-    pub fn new(input: &'input str) -> Self
+    pub fn new(input: &'input str)  -> Self
     {
 	Self
 	{
-	    inner: Token::lexer(input).spanned(),
-	    errors: Vec::new(),
+	  stream: Token::lexer(input).spanned(),
 	}
     }
 }
+
 pub type Spanned<Tok, Loc, Error> = Result<(Loc, Tok, Loc), Error>;
 
 impl<'input> Iterator for KaisaLexer<'input>
 {
-    type Item = Spanned<Token<'input>,usize,LexerError>;
+    type Item = Spanned<Token<'input>,usize,LexerError> ;
 
     fn next(&mut self) -> Option<Self::Item>
     {
-	match self.inner.next()
+	match self.stream.next()
 	{
-	    Some((token_res,pos)) => {
-		match token_res
-		{
-		    Ok(token) => todo!(),
-		    Err(err) => todo!(),
-		}
+	    Some((token,range)) =>
+	    {
+             match token
+             {
+	       Ok(token) => Some(Ok((range.start,token,range.end))),
+	       Err(err) => Some(Err(err)),
+             }
 	    },
 	    None => None,
 	}
@@ -63,27 +86,25 @@ mod tests
     #[test]
     fn test_default_number()
     {
-	let input = "1234";
-	let mut lexer = Token::lexer(input);
-
-	assert_eq!(lexer.next(),Some(Ok(Token::DefaultNumber("1234"))))
+	let input = "0111";
+	let mut lexer = KaisaLexer::new(input);
+	assert_eq!(lexer.next(),Some(Ok((0,Token::DefaultNumber("0111"),4))))
     }
 
     #[test]
     fn test_string_literal()
     {
 	let input = "\"Hello World!\"";
-	let mut lexer = Token::lexer(input);
-
-	assert_eq!(lexer.next(),Some(Ok(Token::StringLiteral("\"Hello World!\""))))
+	let mut lexer = KaisaLexer::new(input);
+	assert_eq!(lexer.next(),Some(Ok((0,Token::StringLiteral("\"Hello World!\""),14))))
     }
 
     #[test]
     fn test_error()
     {
-	let input = "h";
-	let mut lexer = Token::lexer(input);
-
-	assert_eq!(lexer.next(),Some(Err(LexerError::default())))
+	let input = "?someIdent";
+	let mut lexer = KaisaLexer::new(input);
+	assert_eq!(lexer.next(),Some(Err(LexerError)));
+	assert_eq!(lexer.next(),Some(Ok((1,Token::Identifier("someIdent"),10))))
     }
 }
