@@ -1,0 +1,16 @@
+extern
+{
+  type Location = usize;
+  type Error = LexerError;
+  enum Token<'input> {
+    "(" => Token::LPAREN,
+    ")" => Token::RPAREN, 
+    "[" => Token::LBRACK,
+    "]" => Token::RBRACK,
+    "'" => Token::SQUOTE,
+    "," => Token::COMMA,
+    "identifier" => Token::Identifier(<&'input str>),
+    "defaultNum" => Token::DefaultNumber(<&'input str>),
+    "charLit" => Token::CharacterLiteral(<&'input str>),
+  }
+}
