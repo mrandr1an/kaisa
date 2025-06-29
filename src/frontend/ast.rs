@@ -37,7 +37,7 @@ pub enum Expr<'a>
  Val(Value<'a>),
  Binary(Box<Expr<'a>>,Binop,Box<Expr<'a>>),    
  Prefix(UnaryL,Box<Expr<'a>>),    
- Postfixt(Box<Expr<'a>>,UnaryR),    
+ Postfix(Box<Expr<'a>>,UnaryR),    
 }
 
 #[derive(Debug,PartialEq, Eq)]
