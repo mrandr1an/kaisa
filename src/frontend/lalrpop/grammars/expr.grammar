@@ -1,6 +1,17 @@
 pub Expr: Box<Expr<'input>> =
 {
  Binary,
+ Call,
+};
+
+Call: Box<Expr<'input>> =
+{
+  <s1: @L> <fun: "identifier"> <e1: @R> <s2: @L> "(" <e: Comma<Expr>> ")" <e2: @R> =>
+  	{
+	  Box::new(Expr::
+	  Call(Node::new(s1..e1,fun),
+	  Node::new(s2..e2,e)))
+	},
 };
 
 Binary: Box<Expr<'input>> =

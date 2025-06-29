@@ -58,4 +58,14 @@ mod tests
 					     (UnaryL::Minus(Node::new(2..3,())),Box::new(Expr::Id(Node::new(3..9,"someId")))))))));
     }
 
+    #[test]
+    fn parse_call()
+    {
+	let input = "sayHello(\"Hello World!\")";
+	let res = ExprParser::new().parse(input,KaisaLexer::new(input));
+	assert_eq!(res,Ok(Box::new(Expr::Call
+				   (Node::new(0..8,"sayHello"),
+				    Node::new(8..24,
+					      vec![Box::new(Expr::Val(Value::String(Node::new(9..23,"\"Hello World!\""))))].into_boxed_slice())))))
+    }
 }
