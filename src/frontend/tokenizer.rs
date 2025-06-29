@@ -46,7 +46,9 @@ pub enum Token<'input> {
     #[token("/")]
     RSLASH,
     #[token("&")]
-    REF, 
+    REF,
+    #[token("!")]
+    EXCL, 
     #[regex(r"[a-zA-Z_][a-zA-Z0-9_]*")]
     Identifier(&'input str),
 }

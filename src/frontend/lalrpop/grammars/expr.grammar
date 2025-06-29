@@ -30,7 +30,7 @@ Factor: Box<Expr<'input>> =
   	Box::new(Expr::Binary(lhs,Binop::Times(Node::new(start..end,())),rhs)),
   <lhs: Factor> <start: @L> "/" <end: @R> <rhs: Term> =>
   	Box::new(Expr::Binary(lhs,Binop::Div(Node::new(start..end,())),rhs)),
-  UnaryL,
+  UnaryR,
 };
 
 Term: Box<Expr<'input>> =
@@ -49,6 +49,13 @@ UnaryL: Box<Expr<'input>> =
   <start: @L> "-" <end: @R> <rhs: UnaryL> =>
       Box::new(Expr::Prefix(UnaryL::Minus(Node::new(start..end,())),rhs)),
   Term,
+};
+
+UnaryR: Box<Expr<'input>> =
+{
+  <lhs: UnaryR> <start: @L> "!" <end: @R> =>
+      Box::new(Expr::Postfix(lhs,UnaryR::Excl(Node::new(start..end,())))),
+  UnaryL,
 };
 
 Access: Box<Expr<'input>> =

@@ -10,6 +10,7 @@ extern
     "'" => Token::SQUOTE,
     "," => Token::COMMA,
     "&" => Token::REF,
+    "!" => Token::EXCL,
     "+" => Token::PLUS,
     "-" => Token::MINUS,
     "*" => Token::STAR,
