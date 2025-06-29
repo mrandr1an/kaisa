@@ -1,5 +1,28 @@
 pub Expr: Box<Expr<'input>> =
 {
+ Binary,
+};
+
+Binary: Box<Expr<'input>> =
+{
+  <lhs: Expr> <start: @L> "+" <end: @R> <rhs: Factor> =>
+  	Box::new(Expr::Binary(lhs,Binop::Plus(Node::new(start..end,())),rhs)),
+  <lhs: Expr> <start: @L> "-" <end: @R> <rhs: Factor> =>
+  	Box::new(Expr::Binary(lhs,Binop::Minus(Node::new(start..end,())),rhs)),
+  Factor,
+};
+
+Factor: Box<Expr<'input>> =
+{
+  <lhs: Factor> <start: @L> "*" <end: @R> <rhs: Term> =>
+  	Box::new(Expr::Binary(lhs,Binop::Times(Node::new(start..end,())),rhs)),
+  <lhs: Factor> <start: @L> "/" <end: @R> <rhs: Term> =>
+  	Box::new(Expr::Binary(lhs,Binop::Div(Node::new(start..end,())),rhs)),
+  Term
+};
+
+Term: Box<Expr<'input>> =
+{
   <val: Value> => Box::new(Expr::Val(val)),
   <start: @L> <id: "identifier"> <end: @R> =>
   	  Box::new(Expr::Id(Node::new(start..end,id))),

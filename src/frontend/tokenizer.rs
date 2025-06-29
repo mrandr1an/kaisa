@@ -34,7 +34,15 @@ pub enum Token<'input> {
     #[token("]")]
     RBRACK,
     #[token(",")]
-    COMMA, 
+    COMMA,
+    #[token("+")]
+    PLUS,
+    #[token("-")]
+    MINUS, 
+    #[token("*")]
+    STAR, 
+    #[token("/")]
+    RSLASH, 
     #[regex(r"[a-zA-Z_][a-zA-Z0-9_]*")]
     Identifier(&'input str),
 }
