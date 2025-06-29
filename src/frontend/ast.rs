@@ -47,6 +47,7 @@ pub enum Binop
  Minus(Node<()>),
  Times(Node<()>),
  Div(Node<()>),
+ Access(Node<()>),
 }
 
 #[derive(Debug,PartialEq, Eq)]

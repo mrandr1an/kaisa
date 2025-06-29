@@ -13,6 +13,7 @@ extern
     "+" => Token::PLUS,
     "-" => Token::MINUS,
     "*" => Token::STAR,
+    "." => Token::DOT,
     "/" => Token::RSLASH,
     "identifier" => Token::Identifier(<&'input str>),
     "defaultNum" => Token::DefaultNumber(<&'input str>),

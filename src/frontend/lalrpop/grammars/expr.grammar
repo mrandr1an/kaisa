@@ -10,6 +10,7 @@ Binary: Box<Expr<'input>> =
   <lhs: Expr> <start: @L> "-" <end: @R> <rhs: Factor> =>
   	Box::new(Expr::Binary(lhs,Binop::Minus(Node::new(start..end,())),rhs)),
   Factor,
+  Access,
 };
 
 Factor: Box<Expr<'input>> =
@@ -39,3 +40,8 @@ UnaryL: Box<Expr<'input>> =
   Term,
 };
 
+Access: Box<Expr<'input>> =
+{
+  <lhs: Expr> <start: @L> "." <end: @R> <rhs: Term> =>
+  	Box::new(Expr::Binary(lhs,Binop::Access(Node::new(start..end,())),rhs)),
+};

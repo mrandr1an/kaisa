@@ -40,7 +40,9 @@ pub enum Token<'input> {
     #[token("-")]
     MINUS, 
     #[token("*")]
-    STAR, 
+    STAR,
+    #[token(".")]
+    DOT, 
     #[token("/")]
     RSLASH,
     #[token("&")]
