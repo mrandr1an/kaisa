@@ -42,7 +42,9 @@ pub enum Token<'input> {
     #[token("*")]
     STAR, 
     #[token("/")]
-    RSLASH, 
+    RSLASH,
+    #[token("&")]
+    REF, 
     #[regex(r"[a-zA-Z_][a-zA-Z0-9_]*")]
     Identifier(&'input str),
 }

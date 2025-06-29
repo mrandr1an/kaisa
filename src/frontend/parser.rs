@@ -10,7 +10,7 @@ lalrpop_mod!(
 #[cfg(test)]
 mod tests
 {
-    use crate::frontend::{ast::{Binop, Expr, Node, Value}, tokenizer::KaisaLexer};
+    use crate::frontend::{ast::{Binop, Expr, Node, UnaryL, Value}, tokenizer::KaisaLexer};
 
     use super::{kaisa::{ValueParser,ExprParser}};
 
@@ -40,4 +40,22 @@ mod tests
 	    Binop::Plus(Node::new(2..3,())),
 	    Box::new(Expr::Id(Node::new(4..6,"ab")))))));
     }
+
+    #[test]
+    fn parse_unary()
+    {
+	let input = "-1";
+	let res = ExprParser::new().parse(input,KaisaLexer::new(input));
+	assert_eq!(res,Ok(Box::new(Expr::Prefix
+				   (UnaryL::Minus(Node::new(0..1,())),
+				    Box::new(Expr::Val(Value::Number(Node::new(1..2,"1"))))))));
+	let input = "- -someId";
+
+	let res = ExprParser::new().parse(input,KaisaLexer::new(input));
+	assert_eq!(res,Ok(Box::new(Expr::Prefix
+				   (UnaryL::Minus(Node::new(0..1,())),
+				    Box::new(Expr::Prefix
+					     (UnaryL::Minus(Node::new(2..3,())),Box::new(Expr::Id(Node::new(3..9,"someId")))))))));
+    }
+
 }
