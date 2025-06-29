@@ -33,6 +33,10 @@ pub enum Token<'input> {
     LBRACK,
     #[token("]")]
     RBRACK,
+    #[token("{")]
+    LCBRACK,
+    #[token("}")]
+    RCBRACK,
     #[token(",")]
     COMMA,
     #[token("+")]

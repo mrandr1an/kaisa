@@ -72,8 +72,20 @@ mod tests
     #[test]
     fn parse_fact()
     {
-	let input = "*x!";
+	let input = "x!";
 	let res = ExprParser::new().parse(input,KaisaLexer::new(input));
 	assert_eq!(res, Ok(Box::new(Expr::Postfix(Box::new(Expr::Id(Node::new(0..1,"x"))),UnaryR::Excl(Node::new(1..2,()))))))
+    }
+
+    #[test]
+    fn parenthesied_expr()
+    {
+	let normal = "x + 1";
+	let paren = "*(x + 1)";
+
+	let res1 = ExprParser::new().parse(normal,KaisaLexer::new(normal));
+	let res2 = ExprParser::new().parse(paren,KaisaLexer::new(paren));
+
+	assert_eq!(res1,res2);
     }
 }

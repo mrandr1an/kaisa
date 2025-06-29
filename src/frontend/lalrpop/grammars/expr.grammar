@@ -1,7 +1,6 @@
 pub Expr: Box<Expr<'input>> =
 {
  Binary,
- Call,
 };
 
 Call: Box<Expr<'input>> =
@@ -48,6 +47,8 @@ UnaryL: Box<Expr<'input>> =
       Box::new(Expr::Prefix(UnaryL::Ref(Node::new(start..end,())),rhs)),
   <start: @L> "-" <end: @R> <rhs: UnaryL> =>
       Box::new(Expr::Prefix(UnaryL::Minus(Node::new(start..end,())),rhs)),
+  Call,
+  Paren,
   Term,
 };
 
@@ -62,4 +63,9 @@ Access: Box<Expr<'input>> =
 {
   <lhs: Expr> <start: @L> "." <end: @R> <rhs: Term> =>
   	Box::new(Expr::Binary(lhs,Binop::Access(Node::new(start..end,())),rhs)),
+};
+
+Paren: Box<Expr<'input>> =
+{
+   <start: @L> "(" <e: Expr> ")" <end: @R> => e,
 };

@@ -14,7 +14,7 @@ pub Value: Value<'input> =
 
 Tuple: Box<[Box<Expr<'input>>]> = 
 {
-  "(" <i: Comma<Expr>> ")" => i,
+  "{" <i: Comma<Expr>> "}" => i,
 };
 
 List: Box<[Box<Expr<'input>>]> = 
