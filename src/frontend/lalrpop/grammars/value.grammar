@@ -2,13 +2,14 @@ pub Value: Value<'input> =
 {
   <start: @L> <num:"defaultNum"> <end: @R>  =>
   	  Value::Number(Node::new(start..end,num)),
-  <start: @L> <t: Tuple> <end: @R> =>
-  	  Value::Tuple(Node::new(start..end,t)),
   <start: @L> <c: "charLit"> <end: @R> =>
   	  Value::Character(Node::new(start..end,c)),
+  <start: @L> <s: "strLit"> <end: @R> =>
+  	  Value::String(Node::new(start..end,s)),
   <start: @L> <l: List> <end: @R> =>
-  	  Value::List(Node::new(start..end,l)),
-  
+  	  Value::List(Node::new(start..end,l)), 
+  <start: @L> <t: Tuple> <end: @R> =>
+  	  Value::Tuple(Node::new(start..end,t)),
 };
 
 Tuple: Box<[Box<Expr<'input>>]> = 

@@ -12,5 +12,6 @@ extern
     "identifier" => Token::Identifier(<&'input str>),
     "defaultNum" => Token::DefaultNumber(<&'input str>),
     "charLit" => Token::CharacterLiteral(<&'input str>),
+    "strLit" => Token::StringLiteral(<&'input str>),
   }
 }
